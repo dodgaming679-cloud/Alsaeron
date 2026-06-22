@@ -13,6 +13,8 @@ export interface Product {
   glowColor: string;
   glowRgb: string;
   shape: "circle" | "diamond" | "hexagon";
+  cardImage: string;
+  heroImage: string;
 }
 
 export const products: Product[] = [
@@ -44,6 +46,8 @@ export const products: Product[] = [
     glowColor: "rgba(37, 99, 235, 0.4)",
     glowRgb: "37, 99, 235",
     shape: "circle",
+    cardImage: "https://images.unsplash.com/photo-1533139502658-0198f920d8e8?w=700&auto=format&fit=crop&q=90",
+    heroImage: "https://images.unsplash.com/photo-1434494878577-86c23bcb06b9?w=1800&auto=format&fit=crop&q=85",
   },
   {
     id: 2,
@@ -73,6 +77,8 @@ export const products: Product[] = [
     glowColor: "rgba(99, 102, 241, 0.4)",
     glowRgb: "99, 102, 241",
     shape: "diamond",
+    cardImage: "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=700&auto=format&fit=crop&q=90",
+    heroImage: "https://images.unsplash.com/photo-1579546929518-9e396f3cc809?w=1800&auto=format&fit=crop&q=85",
   },
   {
     id: 3,
@@ -102,6 +108,8 @@ export const products: Product[] = [
     glowColor: "rgba(14, 165, 233, 0.4)",
     glowRgb: "14, 165, 233",
     shape: "hexagon",
+    cardImage: "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=700&auto=format&fit=crop&q=90",
+    heroImage: "https://images.unsplash.com/photo-1557672172-298e090bd0f1?w=1800&auto=format&fit=crop&q=85",
   },
 ];
 

@@ -1,30 +1,66 @@
-import { Switch, Route, Router as WouterRouter } from "wouter";
+import { useState, useCallback } from "react";
+import { Switch, Route, Router as WouterRouter, useLocation } from "wouter";
+import { AnimatePresence, motion } from "framer-motion";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { Preloader } from "@/components/Preloader";
 import NotFound from "@/pages/not-found";
 import Home from "@/pages/Home";
 import ProductPage from "@/pages/ProductPage";
 
 const queryClient = new QueryClient();
 
-function Router() {
+const easeOutExpo = [0.16, 1, 0.3, 1] as const;
+
+function AnimatedRoutes() {
+  const [location] = useLocation();
   return (
-    <Switch>
-      <Route path="/" component={Home} />
-      <Route path="/product/:slug" component={ProductPage} />
-      <Route component={NotFound} />
-    </Switch>
+    <AnimatePresence mode="wait" initial={false}>
+      <motion.div
+        key={location}
+        initial={{ opacity: 0, y: 18 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -12 }}
+        transition={{ duration: 0.45, ease: easeOutExpo }}
+      >
+        <Switch location={location}>
+          <Route path="/" component={Home} />
+          <Route path="/product/:slug" component={ProductPage} />
+          <Route component={NotFound} />
+        </Switch>
+      </motion.div>
+    </AnimatePresence>
   );
 }
 
 function App() {
+  const [preloaderDone, setPreloaderDone] = useState(
+    () => typeof sessionStorage !== "undefined" && sessionStorage.getItem("alsaeron-loaded") === "1"
+  );
+
+  const handlePreloaderComplete = useCallback(() => {
+    if (typeof sessionStorage !== "undefined") {
+      sessionStorage.setItem("alsaeron-loaded", "1");
+    }
+    setPreloaderDone(true);
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
-          <Router />
-        </WouterRouter>
+        <AnimatePresence>
+          {!preloaderDone && (
+            <Preloader key="preloader" onComplete={handlePreloaderComplete} />
+          )}
+        </AnimatePresence>
+
+        {preloaderDone && (
+          <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
+            <AnimatedRoutes />
+          </WouterRouter>
+        )}
+
         <Toaster />
       </TooltipProvider>
     </QueryClientProvider>
