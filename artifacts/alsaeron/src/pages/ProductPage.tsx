@@ -744,7 +744,8 @@ export default function ProductPage() {
       {/* ─── HERO ─── */}
       <section
         ref={heroRef}
-        className="relative h-screen min-h-[640px] flex items-center justify-center overflow-hidden"
+        className="relative flex items-center justify-center overflow-hidden"
+        style={{ height: "100svh", minHeight: "600px" }}
       >
         <motion.div
           className="absolute inset-[-8%] bg-cover bg-center will-change-transform"
