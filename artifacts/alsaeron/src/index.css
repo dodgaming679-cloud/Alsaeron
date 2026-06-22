@@ -207,10 +207,9 @@
 
   body {
     @apply font-sans antialiased bg-background text-foreground;
-    /* Promote body to GPU layer for smoother compositing */
-    transform: translateZ(0);
-    /* Prevent iOS rubber-band scroll colour flash */
-    overscroll-behavior: none;
+    /* NOTE: Do NOT add transform here — it breaks position:fixed (Navbar) */
+    /* Prevent iOS rubber-band scroll background flash */
+    overscroll-behavior-x: none;
   }
 
   /* Film grain overlay — fixed, pointer-events-none, GPU-composited */

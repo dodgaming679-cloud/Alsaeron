@@ -283,7 +283,8 @@ export default function Home() {
       {/* ─── HERO ─── */}
       <section
         ref={heroRef}
-        className="relative h-screen min-h-[640px] flex items-center justify-center overflow-hidden"
+        className="relative flex items-center justify-center overflow-hidden"
+        style={{ height: "100svh", minHeight: "600px" }}
       >
         <div className="absolute inset-0 z-0 pointer-events-none">
           <div
@@ -322,27 +323,29 @@ export default function Home() {
         </div>
 
         <motion.div
-          className="relative z-10 text-center px-6 w-full max-w-6xl mx-auto will-change-transform"
-          style={{ y: heroY, opacity: heroOpacity }}
+          className="relative z-10 text-center w-full max-w-6xl mx-auto"
+          style={{ y: heroY, opacity: heroOpacity, paddingLeft: "1.5rem", paddingRight: "1.5rem" }}
         >
           <motion.p
-            initial={{ opacity: 0, letterSpacing: "0.1em" }}
-            animate={{ opacity: 1, letterSpacing: "0.38em" }}
-            transition={{ duration: 2.2, delay: 0.2, ease }}
-            className="text-[10px] md:text-[11px] font-sans text-primary mb-7 uppercase block"
+            initial={{ opacity: 0, letterSpacing: "0.08em" }}
+            animate={{ opacity: 1, letterSpacing: "0.34em" }}
+            transition={{ duration: 2.0, delay: 0.2, ease }}
+            className="text-[9px] sm:text-[10px] md:text-[11px] font-sans text-primary mb-6 md:mb-8 uppercase block"
             data-testid="text-hero-eyebrow"
           >
             A New Era of Luxury
           </motion.p>
 
-          <div className="overflow-hidden mb-5">
+          <div className="overflow-hidden mb-4 md:mb-5">
             <motion.h1
               initial={{ y: "105%", opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 1.5, delay: 0.4, ease }}
-              className="font-serif text-white tracking-[0.09em] leading-none select-none"
+              className="font-serif text-white leading-none select-none"
               style={{
-                fontSize: "clamp(3.2rem, 13.5vw, 10.5rem)",
+                /* Safe clamp: 13vw hits ~41px at 320px (fits); max 10.5rem on wide screens */
+                fontSize: "clamp(2rem, 13vw, 10.5rem)",
+                letterSpacing: "0.08em",
                 textShadow: "0 0 100px rgba(37,99,235,0.13), 0 0 240px rgba(37,99,235,0.06)",
               }}
               data-testid="text-hero-brand"
@@ -352,19 +355,19 @@ export default function Home() {
           </div>
 
           <motion.div
-            initial={{ opacity: 0, y: 14 }}
+            initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.3, delay: 1.05, ease }}
-            className="flex flex-col items-center gap-5"
+            transition={{ duration: 1.3, delay: 1.0, ease }}
+            className="flex flex-col items-center gap-4 md:gap-6"
           >
             <p
-              className="text-lg md:text-xl font-serif font-light text-white/42 italic tracking-wide"
+              className="text-base md:text-xl font-serif font-light text-white/42 italic tracking-wide"
               data-testid="text-hero-tagline"
             >
               Crafted Beyond Time.
             </p>
             <div
-              className="w-px h-14 md:h-18"
+              className="w-px h-10 md:h-14"
               style={{ background: "linear-gradient(to bottom, rgba(37,99,235,0.55), transparent)" }}
             />
           </motion.div>
