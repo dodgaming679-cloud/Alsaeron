@@ -48,6 +48,81 @@ const stats = [
   { value: "XII", label: "Pieces per year" },
 ];
 
+/* ─── Small material accent for cards ─── */
+function CardAccent({ product }: { product: Product }) {
+  const { glowRgb, shape } = product;
+
+  if (shape === "circle") {
+    return (
+      <div className="relative w-12 h-12 flex items-center justify-center">
+        <div
+          className="absolute inset-0 rounded-full"
+          style={{ border: `1px solid rgba(${glowRgb},0.3)` }}
+        />
+        <div
+          className="absolute inset-[3px] rounded-full"
+          style={{
+            background: `conic-gradient(from 0deg, transparent 70%, rgba(${glowRgb},0.6) 85%, transparent 100%)`,
+          }}
+        />
+        <div
+          className="w-1.5 h-1.5 rounded-full"
+          style={{
+            background: `rgba(${glowRgb},1)`,
+            boxShadow: `0 0 8px rgba(${glowRgb},1), 0 0 20px rgba(${glowRgb},0.5)`,
+          }}
+        />
+      </div>
+    );
+  }
+  if (shape === "diamond") {
+    return (
+      <div className="relative w-10 h-10 flex items-center justify-center">
+        <div
+          className="w-7 h-7"
+          style={{
+            border: `1px solid rgba(${glowRgb},0.35)`,
+            transform: "rotate(45deg)",
+            background: `rgba(${glowRgb},0.06)`,
+          }}
+        />
+        <div
+          className="absolute w-1.5 h-1.5"
+          style={{
+            background: `rgba(${glowRgb},0.95)`,
+            transform: "rotate(45deg)",
+            boxShadow: `0 0 8px rgba(${glowRgb},1)`,
+          }}
+        />
+      </div>
+    );
+  }
+  return (
+    <div className="relative w-12 h-10 flex items-center justify-center">
+      {[0, 1, 2].map((i) => (
+        <div
+          key={i}
+          className="absolute"
+          style={{
+            width: `${28 - i * 6}px`,
+            height: `${14 - i * 2}px`,
+            border: `0.5px solid rgba(${glowRgb},${0.15 + i * 0.12})`,
+            borderRadius: "1px",
+            transform: `translateY(${-i * 4}px)`,
+          }}
+        />
+      ))}
+      <div
+        className="absolute w-1 h-1 rounded-full"
+        style={{
+          background: `rgba(${glowRgb},0.9)`,
+          boxShadow: `0 0 6px rgba(${glowRgb},1)`,
+        }}
+      />
+    </div>
+  );
+}
+
 function ProductCard({ product, index }: { product: Product; index: number }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
@@ -57,203 +132,122 @@ function ProductCard({ product, index }: { product: Product; index: number }) {
     <motion.article
       ref={ref}
       data-testid={`card-product-${product.id}`}
-      initial={{ opacity: 0, y: 60 }}
+      initial={{ opacity: 0, y: 55 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 1.2, delay: index * 0.15, ease }}
+      transition={{ duration: 1.2, delay: index * 0.14, ease }}
       className="group cursor-pointer"
       onClick={() => setLocation(`/product/${product.slug}`)}
     >
-      {/* Card visual */}
+      {/* Image container */}
       <div
-        className="relative aspect-[3/4] mb-7 overflow-hidden flex items-center justify-center"
-        style={{ border: "1px solid rgba(255,255,255,0.06)" }}
+        className="relative aspect-[3/4] mb-7 overflow-hidden"
+        style={{ border: "1px solid rgba(255,255,255,0.055)" }}
       >
-        {/* Real photo background */}
+        {/* Real photo — more visible */}
         <div
-          className="absolute inset-0 bg-cover bg-center transition-transform duration-[1400ms] ease-out group-hover:scale-105"
+          className="absolute inset-0 bg-cover bg-center transition-transform duration-[1600ms] ease-out group-hover:scale-[1.04]"
           style={{ backgroundImage: `url(${product.cardImage})` }}
         />
-        {/* Heavy dark overlay — keeps the design; image provides texture */}
+
+        {/* Graduated overlay — lighter at centre so the photo shows through */}
         <div
           className="absolute inset-0"
           style={{
-            background: `linear-gradient(160deg, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.70) 50%, rgba(0,0,0,0.88) 100%)`,
+            background: `linear-gradient(
+              to bottom,
+              rgba(0,0,0,0.55) 0%,
+              rgba(0,0,0,0.28) 35%,
+              rgba(0,0,0,0.28) 65%,
+              rgba(0,0,0,0.72) 100%
+            )`,
           }}
         />
-        {/* Accent color glow behind visual */}
+
+        {/* Product accent glow — subtle, sits on top of photo */}
         <div
-          className="absolute inset-0 opacity-50 transition-opacity duration-700 group-hover:opacity-80"
+          className="absolute inset-0 opacity-30 transition-opacity duration-700 group-hover:opacity-55"
           style={{
-            background: `radial-gradient(ellipse at center, ${product.accentColor} 0%, transparent 70%)`,
+            background: `radial-gradient(ellipse at 50% 45%, rgba(${product.glowRgb},0.25) 0%, transparent 65%)`,
           }}
         />
 
-        {/* Geometric product visual */}
-        <motion.div
-          className="relative z-10"
-          whileHover={{ scale: 1.05 }}
-          transition={{ duration: 0.9, ease }}
-        >
-          <ProductShapeSmall product={product} />
-        </motion.div>
+        {/* Top-left material accent badge */}
+        <div className="absolute top-5 left-5 z-10">
+          <CardAccent product={product} />
+        </div>
 
-        {/* Hover reveal overlay */}
-        <motion.div
-          className="absolute inset-0 flex items-end justify-center pb-8 z-20"
-          initial={{ opacity: 0 }}
-          whileHover={{ opacity: 1 }}
-          transition={{ duration: 0.35 }}
+        {/* Category label top-right */}
+        <div className="absolute top-6 right-5 z-10">
+          <p
+            className="text-[8px] tracking-[0.3em] font-sans uppercase"
+            style={{ color: `rgba(${product.glowRgb},0.75)` }}
+          >
+            {product.category}
+          </p>
+        </div>
+
+        {/* Hover reveal: bottom gradient + CTA */}
+        <div
+          className="absolute inset-0 flex items-end justify-between px-5 pb-5 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-400"
+          style={{
+            background: `linear-gradient(to top, rgba(0,0,0,0.82) 0%, transparent 50%)`,
+          }}
         >
+          <span className="text-white/55 font-serif italic text-sm leading-snug max-w-[70%]">
+            {product.tagline}
+          </span>
           <div
-            className="absolute inset-0"
-            style={{
-              background: `linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 55%)`,
-            }}
-          />
-          <div className="relative flex items-center gap-2 text-[10px] tracking-[0.3em] text-white font-sans">
-            DISCOVER <ArrowRight size={12} strokeWidth={1.5} />
+            className="flex items-center justify-center w-8 h-8 shrink-0"
+            style={{ border: `1px solid rgba(${product.glowRgb},0.55)` }}
+          >
+            <ArrowRight size={12} strokeWidth={1.5} style={{ color: `rgba(${product.glowRgb},0.9)` }} />
           </div>
-        </motion.div>
+        </div>
 
         {/* Glow border on hover */}
         <div
-          className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"
-          style={{ boxShadow: `inset 0 0 50px ${product.glowColor}` }}
-        />
-        <div
           className="absolute inset-[-1px] opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"
-          style={{
-            boxShadow: `0 0 35px -8px ${product.glowColor}`,
-            border: `1px solid ${product.glowColor}`,
-          }}
+          style={{ boxShadow: `0 0 32px -6px ${product.glowColor}`, border: `1px solid rgba(${product.glowRgb},0.22)` }}
         />
 
-        {/* Top line accent */}
+        {/* Top shimmer line */}
         <div
           className="absolute top-0 left-0 right-0 h-[1px] opacity-0 group-hover:opacity-100 transition-opacity duration-700"
           style={{
-            background: `linear-gradient(to right, transparent, rgba(${product.glowRgb}, 0.8), transparent)`,
+            background: `linear-gradient(to right, transparent, rgba(${product.glowRgb},0.7), transparent)`,
           }}
         />
       </div>
 
       {/* Card text */}
-      <div className="space-y-2.5 px-0.5">
-        <p
-          className="text-[9px] tracking-[0.32em] font-sans uppercase"
-          style={{ color: `rgba(${product.glowRgb}, 0.65)` }}
-        >
-          {product.category}
-        </p>
+      <div className="space-y-2 px-0.5">
         <div className="flex justify-between items-baseline gap-4">
-          <h3 className="text-lg md:text-[1.2rem] font-serif text-white/85 group-hover:text-white transition-colors duration-500 leading-snug">
+          <h3 className="text-lg md:text-[1.2rem] font-serif text-white/82 group-hover:text-white transition-colors duration-500 leading-snug">
             {product.name}
           </h3>
-          <span className="text-xs font-light text-white/30 shrink-0 tabular-nums">
+          <span className="text-xs font-light text-white/28 shrink-0 tabular-nums">
             {product.price}
           </span>
         </div>
         <p className="text-xs text-white/38 font-light leading-relaxed">
           {product.description}
         </p>
-        <div className="pt-1 flex items-center gap-2 text-[9px] tracking-[0.22em] font-sans uppercase overflow-hidden">
+        <div className="pt-1.5 flex items-center gap-2 text-[9px] tracking-[0.2em] font-sans uppercase overflow-hidden">
           <span
             className="block max-w-0 group-hover:max-w-[5rem] transition-all duration-500 overflow-hidden whitespace-nowrap"
-            style={{ color: `rgba(${product.glowRgb}, 0.7)` }}
+            style={{ color: `rgba(${product.glowRgb},0.7)` }}
           >
             Discover
           </span>
-          <motion.span
-            className="block"
-            style={{ color: `rgba(${product.glowRgb}, 0.4)` }}
-          >
-            <ArrowRight
-              size={11}
-              strokeWidth={1.5}
-              className="group-hover:translate-x-1 transition-transform duration-500"
-            />
-          </motion.span>
+          <ArrowRight
+            size={11}
+            strokeWidth={1.5}
+            className="group-hover:translate-x-1 transition-transform duration-500"
+            style={{ color: `rgba(${product.glowRgb},0.4)` }}
+          />
         </div>
       </div>
     </motion.article>
-  );
-}
-
-function ProductShapeSmall({ product }: { product: Product }) {
-  const { glowRgb, shape } = product;
-  if (shape === "circle") {
-    return (
-      <div className="relative w-32 h-32 md:w-40 md:h-40 flex items-center justify-center">
-        <div
-          className="absolute inset-0 rounded-full"
-          style={{ border: "1px solid rgba(255,255,255,0.08)" }}
-        />
-        <div
-          className="absolute inset-4 rounded-full"
-          style={{ border: `1px solid rgba(${glowRgb}, 0.25)` }}
-        />
-        <div
-          className="absolute inset-0 rounded-full"
-          style={{
-            background: `conic-gradient(from 0deg, transparent 70%, rgba(${glowRgb},0.35) 85%, transparent 100%)`,
-          }}
-        />
-        <div
-          className="w-2.5 h-2.5 rounded-full"
-          style={{
-            background: `rgba(${glowRgb},0.8)`,
-            boxShadow: `0 0 18px rgba(${glowRgb},1), 0 0 40px rgba(${glowRgb},0.4)`,
-          }}
-        />
-      </div>
-    );
-  }
-  if (shape === "diamond") {
-    return (
-      <div className="relative w-32 h-32 md:w-40 md:h-40 flex items-center justify-center">
-        <div
-          className="w-20 h-20 absolute"
-          style={{ border: "1px solid rgba(255,255,255,0.1)", transform: "rotate(45deg)" }}
-        />
-        <div
-          className="w-28 h-28 absolute"
-          style={{ border: `1px solid rgba(${glowRgb}, 0.18)`, transform: "rotate(45deg)" }}
-        />
-        <div
-          className="w-3 h-3 absolute"
-          style={{
-            background: `rgba(${glowRgb},0.9)`,
-            transform: "rotate(45deg)",
-            boxShadow: `0 0 18px rgba(${glowRgb},1)`,
-          }}
-        />
-      </div>
-    );
-  }
-  return (
-    <div className="relative w-32 h-32 md:w-40 md:h-40 flex items-center justify-center">
-      <svg viewBox="0 0 100 100" className="absolute w-full h-full opacity-18">
-        <polygon
-          points="50,5 95,27.5 95,72.5 50,95 5,72.5 5,27.5"
-          fill="none"
-          stroke="white"
-          strokeWidth="0.5"
-        />
-        <polygon
-          points="50,16 84,32.5 84,67.5 50,84 16,67.5 16,32.5"
-          fill="none"
-          stroke={`rgba(${glowRgb},0.5)`}
-          strokeWidth="0.5"
-        />
-      </svg>
-      <div
-        className="w-3.5 h-3.5 rounded-sm rotate-12"
-        style={{
-          background: `rgba(${glowRgb},0.9)`,
-          boxShadow: `0 0 20px rgba(${glowRgb},1)`,
-        }}
-      />
-    </div>
   );
 }
 
@@ -270,14 +264,16 @@ export default function Home() {
     offset: ["start end", "end start"],
   });
 
-  const heroY = useSpring(useTransform(heroScroll, [0, 1], [0, 130]), {
-    stiffness: 55,
-    damping: 28,
+  const heroY = useSpring(useTransform(heroScroll, [0, 1], [0, 120]), {
+    stiffness: 42,
+    damping: 26,
+    restDelta: 0.001,
   });
   const heroOpacity = useTransform(heroScroll, [0, 0.65], [1, 0]);
-  const showcaseY = useSpring(useTransform(showcaseScroll, [0, 1], [40, -40]), {
-    stiffness: 55,
-    damping: 28,
+  const showcaseY = useSpring(useTransform(showcaseScroll, [0, 1], [36, -36]), {
+    stiffness: 42,
+    damping: 26,
+    restDelta: 0.001,
   });
 
   return (
@@ -294,41 +290,39 @@ export default function Home() {
             className="absolute inset-0"
             style={{
               background:
-                "radial-gradient(ellipse 80% 55% at 50% 56%, rgba(37,99,235,0.09) 0%, transparent 70%)",
+                "radial-gradient(ellipse 80% 55% at 50% 56%, rgba(37,99,235,0.08) 0%, transparent 70%)",
             }}
           />
           <motion.div
-            className="absolute top-[18%] left-[12%] w-[520px] h-[520px] rounded-full"
+            className="absolute top-[18%] left-[12%] w-[520px] h-[520px] rounded-full will-change-transform"
             style={{
-              background:
-                "radial-gradient(circle, rgba(37,99,235,0.11) 0%, transparent 70%)",
+              background: "radial-gradient(circle, rgba(37,99,235,0.1) 0%, transparent 70%)",
               filter: "blur(70px)",
             }}
-            animate={{ scale: [1, 1.14, 1], opacity: [0.35, 0.55, 0.35] }}
-            transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+            animate={{ scale: [1, 1.12, 1], opacity: [0.32, 0.52, 0.32] }}
+            transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
           />
           <motion.div
-            className="absolute bottom-[12%] right-[8%] w-[420px] h-[420px] rounded-full"
+            className="absolute bottom-[12%] right-[8%] w-[420px] h-[420px] rounded-full will-change-transform"
             style={{
-              background:
-                "radial-gradient(circle, rgba(99,102,241,0.09) 0%, transparent 70%)",
+              background: "radial-gradient(circle, rgba(99,102,241,0.08) 0%, transparent 70%)",
               filter: "blur(90px)",
             }}
-            animate={{ scale: [1, 1.18, 1], opacity: [0.25, 0.45, 0.25] }}
-            transition={{ duration: 16, repeat: Infinity, ease: "easeInOut", delay: 4 }}
+            animate={{ scale: [1, 1.16, 1], opacity: [0.22, 0.42, 0.22] }}
+            transition={{ duration: 18, repeat: Infinity, ease: "easeInOut", delay: 5 }}
           />
           <div
             className="absolute inset-0"
             style={{
               backgroundImage:
-                "linear-gradient(rgba(255,255,255,0.012) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.012) 1px, transparent 1px)",
+                "linear-gradient(rgba(255,255,255,0.011) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.011) 1px, transparent 1px)",
               backgroundSize: "80px 80px",
             }}
           />
         </div>
 
         <motion.div
-          className="relative z-10 text-center px-6 w-full max-w-6xl mx-auto"
+          className="relative z-10 text-center px-6 w-full max-w-6xl mx-auto will-change-transform"
           style={{ y: heroY, opacity: heroOpacity }}
         >
           <motion.p
@@ -349,8 +343,7 @@ export default function Home() {
               className="font-serif text-white tracking-[0.09em] leading-none select-none"
               style={{
                 fontSize: "clamp(3.2rem, 13.5vw, 10.5rem)",
-                textShadow:
-                  "0 0 100px rgba(37,99,235,0.14), 0 0 240px rgba(37,99,235,0.07)",
+                textShadow: "0 0 100px rgba(37,99,235,0.13), 0 0 240px rgba(37,99,235,0.06)",
               }}
               data-testid="text-hero-brand"
             >
@@ -372,10 +365,7 @@ export default function Home() {
             </p>
             <div
               className="w-px h-14 md:h-18"
-              style={{
-                background:
-                  "linear-gradient(to bottom, rgba(37,99,235,0.55), transparent)",
-              }}
+              style={{ background: "linear-gradient(to bottom, rgba(37,99,235,0.55), transparent)" }}
             />
           </motion.div>
         </motion.div>
@@ -386,12 +376,10 @@ export default function Home() {
           transition={{ delay: 2.4, duration: 1.4 }}
           className="absolute bottom-9 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 z-10"
         >
-          <span className="text-[8px] tracking-[0.4em] text-white/22 font-sans uppercase">
-            Scroll
-          </span>
+          <span className="text-[8px] tracking-[0.4em] text-white/22 font-sans uppercase">Scroll</span>
           <motion.div
             animate={{ y: [0, 7, 0] }}
-            transition={{ repeat: Infinity, duration: 2.8, ease: "easeInOut" }}
+            transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
           >
             <ArrowDown size={13} strokeWidth={1} className="text-white/22" />
           </motion.div>
@@ -403,8 +391,7 @@ export default function Home() {
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
-            background:
-              "radial-gradient(ellipse 55% 35% at 50% 50%, rgba(37,99,235,0.035) 0%, transparent 70%)",
+            background: "radial-gradient(ellipse 55% 35% at 50% 50%, rgba(37,99,235,0.03) 0%, transparent 70%)",
           }}
         />
         <div className="container mx-auto px-6 md:px-16 max-w-5xl">
@@ -416,7 +403,7 @@ export default function Home() {
               <h2 className="text-3xl md:text-5xl lg:text-[3.5rem] font-serif text-white leading-[1.08] mb-0">
                 Where antiquity meets
                 <br />
-                <span className="text-white/36">the edge of tomorrow.</span>
+                <span className="text-white/35">the edge of tomorrow.</span>
               </h2>
             </FadeIn>
             <FadeIn delay={0.14} className="max-w-2xl">
@@ -424,12 +411,11 @@ export default function Home() {
                 ALSAERON is not merely worn; it is inherited. We engineer
                 artifacts using materials sourced from the deepest reaches of
                 the cosmos, forged with the discipline of forgotten empires.
-                Every piece is a testament to permanence in a transient
-                universe.
+                Every piece is a testament to permanence in a transient universe.
               </p>
               <button
                 data-testid="button-manifesto"
-                className="group flex items-center gap-4 text-[10px] tracking-[0.26em] text-white/48 hover:text-white transition-colors duration-600 font-sans uppercase"
+                className="group flex items-center gap-4 text-[10px] tracking-[0.26em] text-white/48 hover:text-white transition-colors duration-500 font-sans uppercase cursor-pointer"
               >
                 Discover the Manifesto
                 <span className="w-10 h-[1px] bg-white/15 group-hover:w-20 group-hover:bg-primary/55 transition-all duration-700 block" />
@@ -474,7 +460,7 @@ export default function Home() {
             <FadeIn delay={0.1}>
               <a
                 href="#"
-                className="hidden md:flex items-center gap-3 text-[9px] tracking-[0.28em] text-white/32 hover:text-white transition-colors duration-600 group font-sans uppercase"
+                className="hidden md:flex items-center gap-3 text-[9px] tracking-[0.28em] text-white/32 hover:text-white transition-colors duration-500 group font-sans uppercase"
                 data-testid="link-view-all"
               >
                 View All
@@ -497,7 +483,7 @@ export default function Home() {
             <Button
               variant="outline"
               data-testid="button-view-all-mobile"
-              className="w-full border-white/[0.08] text-white/45 rounded-none tracking-[0.22em] text-[10px] py-5 font-sans hover:bg-transparent hover:border-white/25 hover:text-white transition-all duration-600"
+              className="w-full border-white/[0.08] text-white/45 rounded-none tracking-[0.22em] text-[10px] py-5 font-sans hover:bg-transparent hover:border-white/25 hover:text-white transition-all duration-500"
             >
               VIEW ALL COLLECTIONS
             </Button>
@@ -513,14 +499,13 @@ export default function Home() {
       >
         <div className="absolute inset-0 bg-black z-0" />
         <motion.div
-          className="absolute inset-0 pointer-events-none z-0"
+          className="absolute inset-0 pointer-events-none z-0 will-change-transform"
           style={{ y: showcaseY }}
         >
           <div
             className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full"
             style={{
-              background:
-                "radial-gradient(circle, rgba(37,99,235,0.07) 0%, rgba(99,102,241,0.035) 45%, transparent 70%)",
+              background: "radial-gradient(circle, rgba(37,99,235,0.065) 0%, rgba(99,102,241,0.03) 45%, transparent 70%)",
               filter: "blur(50px)",
             }}
           />
@@ -528,8 +513,7 @@ export default function Home() {
         <div
           className="absolute inset-0 z-0 pointer-events-none"
           style={{
-            backgroundImage:
-              "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.025) 1px, transparent 0)",
+            backgroundImage: "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.02) 1px, transparent 0)",
             backgroundSize: "52px 52px",
           }}
         />
@@ -539,8 +523,7 @@ export default function Home() {
             <div
               className="w-px h-16 md:h-20 mx-auto mb-12 md:mb-16"
               style={{
-                background:
-                  "linear-gradient(to bottom, transparent, rgba(37,99,235,0.45), transparent)",
+                background: "linear-gradient(to bottom, transparent, rgba(37,99,235,0.45), transparent)",
               }}
             />
             <p className="text-[9px] tracking-[0.38em] text-primary/42 font-sans uppercase mb-7">
@@ -558,10 +541,9 @@ export default function Home() {
             </p>
             <button
               data-testid="button-bespoke"
-              className="group inline-flex items-center gap-4 border border-white/[0.09] hover:border-primary/35 px-10 md:px-14 py-4 text-[10px] tracking-[0.28em] text-white/48 hover:text-white transition-all duration-700 font-sans uppercase"
+              className="group inline-flex items-center gap-4 border border-white/[0.09] hover:border-primary/35 px-10 md:px-14 py-4 text-[10px] tracking-[0.28em] text-white/48 hover:text-white transition-all duration-600 font-sans uppercase cursor-pointer"
               onMouseEnter={(e) => {
-                (e.currentTarget as HTMLButtonElement).style.boxShadow =
-                  "0 0 45px rgba(37,99,235,0.13)";
+                (e.currentTarget as HTMLButtonElement).style.boxShadow = "0 0 45px rgba(37,99,235,0.12)";
               }}
               onMouseLeave={(e) => {
                 (e.currentTarget as HTMLButtonElement).style.boxShadow = "none";
@@ -577,8 +559,7 @@ export default function Home() {
             <div
               className="w-px h-16 md:h-20 mx-auto mt-12 md:mt-16"
               style={{
-                background:
-                  "linear-gradient(to bottom, rgba(37,99,235,0.45), transparent)",
+                background: "linear-gradient(to bottom, rgba(37,99,235,0.45), transparent)",
               }}
             />
           </FadeIn>
@@ -597,8 +578,7 @@ export default function Home() {
                 Join the Inner Circle
               </h2>
               <p className="text-sm text-white/35 font-light leading-relaxed">
-                Invitations to private viewings and early access to bespoke
-                commissions.
+                Invitations to private viewings and early access to bespoke commissions.
               </p>
             </FadeIn>
 
@@ -607,15 +587,13 @@ export default function Home() {
                 className="relative overflow-hidden p-8 md:p-10"
                 style={{
                   border: "1px solid rgba(255,255,255,0.055)",
-                  background:
-                    "linear-gradient(140deg, rgba(37,99,235,0.035) 0%, transparent 100%)",
+                  background: "linear-gradient(140deg, rgba(37,99,235,0.032) 0%, transparent 100%)",
                 }}
               >
                 <div
                   className="absolute top-0 left-0 right-0 h-[1px]"
                   style={{
-                    background:
-                      "linear-gradient(to right, transparent, rgba(37,99,235,0.45), transparent)",
+                    background: "linear-gradient(to right, transparent, rgba(37,99,235,0.45), transparent)",
                   }}
                 />
                 <form className="flex flex-col gap-6" onSubmit={(e) => e.preventDefault()}>
@@ -628,17 +606,14 @@ export default function Home() {
                   <button
                     type="submit"
                     data-testid="button-request-invitation"
-                    className="w-full py-4 text-[10px] tracking-[0.28em] font-sans uppercase cursor-pointer text-black transition-all duration-700"
+                    className="w-full py-4 text-[10px] tracking-[0.28em] font-sans uppercase cursor-pointer text-black transition-all duration-600"
                     style={{ background: "rgba(255,255,255,0.93)" }}
                     onMouseEnter={(e) => {
-                      (e.currentTarget as HTMLButtonElement).style.background =
-                        "rgba(255,255,255,1)";
-                      (e.currentTarget as HTMLButtonElement).style.boxShadow =
-                        "0 0 40px rgba(37,99,235,0.18)";
+                      (e.currentTarget as HTMLButtonElement).style.background = "rgba(255,255,255,1)";
+                      (e.currentTarget as HTMLButtonElement).style.boxShadow = "0 0 40px rgba(37,99,235,0.18)";
                     }}
                     onMouseLeave={(e) => {
-                      (e.currentTarget as HTMLButtonElement).style.background =
-                        "rgba(255,255,255,0.93)";
+                      (e.currentTarget as HTMLButtonElement).style.background = "rgba(255,255,255,0.93)";
                       (e.currentTarget as HTMLButtonElement).style.boxShadow = "none";
                     }}
                   >

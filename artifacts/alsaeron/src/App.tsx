@@ -29,10 +29,11 @@ function AnimatedRoutes() {
       <AnimatePresence mode="wait" initial={false}>
         <motion.div
           key={location}
-          initial={{ opacity: 0, y: 18 }}
+          initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -12 }}
-          transition={{ duration: 0.45, ease: easeOutExpo }}
+          exit={{ opacity: 0, y: -8 }}
+          transition={{ duration: 0.55, ease: easeOutExpo }}
+          style={{ willChange: "opacity, transform" }}
         >
           <Switch location={location}>
             <Route path="/" component={Home} />

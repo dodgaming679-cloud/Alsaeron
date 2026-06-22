@@ -46,8 +46,10 @@ export const products: Product[] = [
     glowColor: "rgba(37, 99, 235, 0.4)",
     glowRgb: "37, 99, 235",
     shape: "circle",
-    cardImage: "https://images.unsplash.com/photo-1533139502658-0198f920d8e8?w=700&auto=format&fit=crop&q=90",
-    heroImage: "https://images.unsplash.com/photo-1434494878577-86c23bcb06b9?w=1800&auto=format&fit=crop&q=85",
+    cardImage:
+      "https://images.unsplash.com/photo-1542496658-e33a6d0d50f6?w=800&auto=format&fit=crop&q=90",
+    heroImage:
+      "https://images.unsplash.com/photo-1523170335258-f5ed11844a49?w=1800&auto=format&fit=crop&q=85",
   },
   {
     id: 2,
@@ -57,8 +59,7 @@ export const products: Product[] = [
     price: "$28,500",
     priceNote: "Includes private sizing ceremony",
     tagline: "The mark of an emperor. The weight of a dynasty.",
-    description:
-      "Platinum and zero-point energy crystal. The mark of an emperor.",
+    description: "Platinum and zero-point energy crystal. The mark of an emperor.",
     story: [
       "The Dynasty Ring was conceived after a single obsession: what does power feel like on the hand? Not the performance of power — the actual, physical sensation of being the kind of person who commands silence when they enter a room.",
       "The band is hand-formed from a single ingot of 950 platinum, worked at temperatures that would destroy lesser alloys. At its crown sits a zero-point energy crystal — a synthetic stone grown over 180 days in conditions mimicking the pressure at the center of a dying star.",
@@ -77,8 +78,10 @@ export const products: Product[] = [
     glowColor: "rgba(99, 102, 241, 0.4)",
     glowRgb: "99, 102, 241",
     shape: "diamond",
-    cardImage: "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=700&auto=format&fit=crop&q=90",
-    heroImage: "https://images.unsplash.com/photo-1579546929518-9e396f3cc809?w=1800&auto=format&fit=crop&q=85",
+    cardImage:
+      "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=800&auto=format&fit=crop&q=90",
+    heroImage:
+      "https://images.unsplash.com/photo-1602173574767-37ac01994b2a?w=1800&auto=format&fit=crop&q=85",
   },
   {
     id: 3,
@@ -88,8 +91,7 @@ export const products: Product[] = [
     price: "$62,000",
     priceNote: "Bespoke dimensions standard",
     tagline: "Impervious elegance. Architecture for the wrist.",
-    description:
-      "Articulated nanocarbon plates. Impervious elegance for the wrist.",
+    description: "Articulated nanocarbon plates. Impervious elegance for the wrist.",
     story: [
       "The Celestial Armor Bracelet was not designed — it was discovered. Early sketches described the human wrist as an architectural problem: how do you clothe power in motion? The answer arrived in the form of 23 articulated nanocarbon plates, moving in concert like the scales of something ancient and unstoppable.",
       "Each plate is CNC-milled from a single block of aerospace-grade nanocarbon — a material used in the thermal shielding of deep-space probes. It is lighter than aluminium, harder than sapphire, and warmer to the touch than any metal has a right to be.",
@@ -108,8 +110,10 @@ export const products: Product[] = [
     glowColor: "rgba(14, 165, 233, 0.4)",
     glowRgb: "14, 165, 233",
     shape: "hexagon",
-    cardImage: "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=700&auto=format&fit=crop&q=90",
-    heroImage: "https://images.unsplash.com/photo-1557672172-298e090bd0f1?w=1800&auto=format&fit=crop&q=85",
+    cardImage:
+      "https://images.unsplash.com/photo-1573408301185-9521e7c58c00?w=800&auto=format&fit=crop&q=90",
+    heroImage:
+      "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=1800&auto=format&fit=crop&q=85",
   },
 ];
 
