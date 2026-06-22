@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "ALSAERON"
+version = "1.0.0"
+id = "artifacts/alsaeron"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 20442
+
+[services.development]
+run = "pnpm --filter @workspace/alsaeron run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/alsaeron", "run", "build" ]
+publicDir = "artifacts/alsaeron/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "20442"
+BASE_PATH = "/"
