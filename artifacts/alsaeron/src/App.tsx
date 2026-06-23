@@ -8,7 +8,7 @@ import { Preloader } from "@/components/Preloader";
 import NotFound from "@/pages/not-found";
 import Home from "@/pages/Home";
 import ProductPage from "@/pages/ProductPage";
-
+import Contact from "@/pages/Contact";
 const queryClient = new QueryClient();
 
 const easeOutExpo = [0.16, 1, 0.3, 1] as const;
@@ -38,6 +38,7 @@ function AnimatedRoutes() {
           <Switch location={location}>
             <Route path="/" component={Home} />
             <Route path="/product/:slug" component={ProductPage} />
+<Route path="/contact" component={Contact} />
             <Route component={NotFound} />
           </Switch>
         </motion.div>
