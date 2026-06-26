@@ -54,11 +54,9 @@ function AnimatedRoutes() {
             <Route component={NotFound} />
 </Switch>
     </motion.div>
-  </AnimatePresence>
-    () =>
-      typeof sessionStorage !== "undefined" &&
-      sessionStorage.getItem("alsaeron-loaded") === "1"
-  );
+  </AnimatePresennce>
+      );
+      }
 
   const handlePreloaderComplete = useCallback(() => {
     if (typeof sessionStorage !== "undefined") {
