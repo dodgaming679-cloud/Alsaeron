@@ -8,9 +8,11 @@ import {
   useInView,
   AnimatePresence,
 } from "framer-motion";
-import { ArrowLeft, ArrowRight, ArrowDown } from "lucide-react";
+import { ArrowLeft, ArrowRight, ArrowDown, ShoppingBag, Zap } from "lucide-react";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import { CartSidebar } from "@/components/CartSidebar";
+import { useCart } from "@/context/CartContext";
 import {
   getProductBySlug,
   getAdjacentProducts,
@@ -683,6 +685,8 @@ export default function ProductPage() {
   const params = useParams<{ slug: string }>();
   const [, setLocation] = useLocation();
   const [modalOpen, setModalOpen] = useState(false);
+  const [addedFeedback, setAddedFeedback] = useState(false);
+  const { addItem } = useCart();
   const heroRef = useRef(null);
   const storyRef = useRef(null);
 
@@ -731,9 +735,41 @@ export default function ProductPage() {
     );
   }
 
+  function handleAddToCart() {
+    if (!product) return;
+    addItem({
+      id: product.id,
+      slug: product.slug,
+      name: product.name,
+      price: product.price,
+      priceINR: product.priceINR,
+      image: product.cardImage,
+      category: product.category,
+      glowRgb: product.glowRgb,
+    });
+    setAddedFeedback(true);
+    setTimeout(() => setAddedFeedback(false), 2000);
+  }
+
+  function handleBuyNow() {
+    if (!product) return;
+    addItem({
+      id: product.id,
+      slug: product.slug,
+      name: product.name,
+      price: product.price,
+      priceINR: product.priceINR,
+      image: product.cardImage,
+      category: product.category,
+      glowRgb: product.glowRgb,
+    });
+    setLocation("/checkout");
+  }
+
   return (
     <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
       <Navbar />
+      <CartSidebar />
 
       <AnimatePresence>
         {modalOpen && (
@@ -1009,22 +1045,63 @@ export default function ProductPage() {
               concierge responds within 48 hours to arrange a consultation at an
               atelier of your choosing.
             </p>
+            {/* Primary CTA buttons */}
+            <div className="flex flex-col sm:flex-row items-center gap-4 justify-center">
+              {/* Buy Now */}
+              <button
+                data-testid="button-buy-now"
+                onClick={handleBuyNow}
+                className="inline-flex items-center gap-3 px-10 md:px-12 py-4 text-[10px] tracking-[0.28em] font-sans uppercase text-black cursor-pointer transition-all duration-500"
+                style={{ background: "rgba(255,255,255,0.93)" }}
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLButtonElement).style.background = "rgba(255,255,255,1)";
+                  (e.currentTarget as HTMLButtonElement).style.boxShadow = `0 0 60px rgba(${product.glowRgb},0.28)`;
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLButtonElement).style.background = "rgba(255,255,255,0.93)";
+                  (e.currentTarget as HTMLButtonElement).style.boxShadow = "none";
+                }}
+              >
+                <Zap size={11} strokeWidth={1.5} />
+                Buy Now
+              </button>
+
+              {/* Add to Cart */}
+              <button
+                data-testid="button-add-to-cart"
+                onClick={handleAddToCart}
+                className="inline-flex items-center gap-3 px-10 md:px-12 py-4 text-[10px] tracking-[0.28em] font-sans uppercase cursor-pointer transition-all duration-500"
+                style={{
+                  border: `1px solid rgba(${product.glowRgb},0.28)`,
+                  color: addedFeedback ? `rgba(${product.glowRgb},0.9)` : "rgba(255,255,255,0.45)",
+                  background: addedFeedback ? `rgba(${product.glowRgb},0.06)` : "transparent",
+                }}
+                onMouseEnter={(e) => {
+                  if (!addedFeedback) {
+                    (e.currentTarget as HTMLButtonElement).style.borderColor = `rgba(${product.glowRgb},0.55)`;
+                    (e.currentTarget as HTMLButtonElement).style.color = "rgba(255,255,255,0.8)";
+                    (e.currentTarget as HTMLButtonElement).style.background = `rgba(${product.glowRgb},0.04)`;
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (!addedFeedback) {
+                    (e.currentTarget as HTMLButtonElement).style.borderColor = `rgba(${product.glowRgb},0.28)`;
+                    (e.currentTarget as HTMLButtonElement).style.color = "rgba(255,255,255,0.45)";
+                    (e.currentTarget as HTMLButtonElement).style.background = "transparent";
+                  }
+                }}
+              >
+                <ShoppingBag size={11} strokeWidth={1.5} />
+                {addedFeedback ? "Added to Cart" : "Add to Cart"}
+              </button>
+            </div>
+
+            {/* Acquire consultation link */}
             <button
-              data-testid="button-acquire-cta"
               onClick={() => setModalOpen(true)}
-              className="inline-flex items-center gap-4 px-10 md:px-14 py-4 text-[10px] tracking-[0.32em] font-sans uppercase text-black cursor-pointer transition-all duration-600"
-              style={{ background: "rgba(255,255,255,0.93)" }}
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLButtonElement).style.background = "rgba(255,255,255,1)";
-                (e.currentTarget as HTMLButtonElement).style.boxShadow = `0 0 60px rgba(${product.glowRgb},0.28)`;
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLButtonElement).style.background = "rgba(255,255,255,0.93)";
-                (e.currentTarget as HTMLButtonElement).style.boxShadow = "none";
-              }}
+              className="mt-5 text-[9px] tracking-[0.22em] font-sans uppercase text-white/20 hover:text-white/45 transition-colors"
             >
-              Acquire Now
-              <ArrowRight size={13} strokeWidth={1.5} />
+              Request Private Consultation
             </button>
             <div
               className="w-px h-16 mx-auto mt-10"
