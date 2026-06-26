@@ -8,12 +8,11 @@ import { Preloader } from "@/components/Preloader";
 import { CartProvider } from "@/context/CartContext";
 import NotFound from "@/pages/not-found";
 import Home from "@/pages/Home";
-import ProductPage from "@/pages/ProductPage";;
+import ProductPage from "@/pages/ProductPage";
 import CheckoutPage from "@/pages/CheckoutPage";
 import PaymentPage from "@/pages/PaymentPage";
-import OrderSuccessPage from "@/pages/OrderSuccessPage";importt AdminOrdersPage from "@/pages/AdminOrdersPage";;
-
-import ProductPage from "@/pages/ProductPage";
+import OrderSuccessPage from "@/pages/OrderSuccessPage";
+import AdminOrdersPage from "@/pages/AdminOrdersPage";
 import Contact from "@/pages/Contact";
 const queryClient = new QueryClient();
 
@@ -45,7 +44,7 @@ function AnimatedRoutes() {
           <Switch location={location}>
             <Route path="/" component={Home} />
             <Route path="/product/:slug" component={ProductPage} />
-            <Route path="/checkout" cockoutPage} />
+            <Route path="/checkout" component={CheckoutPage} />
             <Route path="/payment" component={PaymentPage} />
             <Route path="/order-success/:orderId" component={OrderSuccessPage} />
             <Route path="/admin" component={AdminOrdersPage} />
@@ -53,9 +52,9 @@ function AnimatedRoutes() {
 <Route path="/contact" component={Contact} />
 
             <Route component={NotFound} />
-        tch>
-   path </motion.div>
-      </AnimatePresreloaderDone, setPreloaderDone] = useState(
+</Switch>
+    </motion.div>
+  </AnimatePresence>
     () =>
       typeof sessionStorage !== "undefined" &&
       sessionStorage.getItem("alsaeron-loaded") === "1"
