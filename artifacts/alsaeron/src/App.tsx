@@ -5,9 +5,14 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Preloader } from "@/components/Preloader";
+import { CartProvider } from "@/context/CartContext";
 import NotFound from "@/pages/not-found";
 import Home from "@/pages/Home";
 import ProductPage from "@/pages/ProductPage";
+import CheckoutPage from "@/pages/CheckoutPage";
+import PaymentPage from "@/pages/PaymentPage";
+import OrderSuccessPage from "@/pages/OrderSuccessPage";
+import AdminOrdersPage from "@/pages/AdminOrdersPage";
 
 const queryClient = new QueryClient();
 
@@ -38,6 +43,10 @@ function AnimatedRoutes() {
           <Switch location={location}>
             <Route path="/" component={Home} />
             <Route path="/product/:slug" component={ProductPage} />
+            <Route path="/checkout" component={CheckoutPage} />
+            <Route path="/payment" component={PaymentPage} />
+            <Route path="/order-success/:orderId" component={OrderSuccessPage} />
+            <Route path="/admin" component={AdminOrdersPage} />
             <Route component={NotFound} />
           </Switch>
         </motion.div>
@@ -48,7 +57,9 @@ function AnimatedRoutes() {
 
 function App() {
   const [preloaderDone, setPreloaderDone] = useState(
-    () => typeof sessionStorage !== "undefined" && sessionStorage.getItem("alsaeron-loaded") === "1"
+    () =>
+      typeof sessionStorage !== "undefined" &&
+      sessionStorage.getItem("alsaeron-loaded") === "1"
   );
 
   const handlePreloaderComplete = useCallback(() => {
@@ -60,21 +71,23 @@ function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <AnimatePresence>
-          {!preloaderDone && (
-            <Preloader key="preloader" onComplete={handlePreloaderComplete} />
+      <CartProvider>
+        <TooltipProvider>
+          <AnimatePresence>
+            {!preloaderDone && (
+              <Preloader key="preloader" onComplete={handlePreloaderComplete} />
+            )}
+          </AnimatePresence>
+
+          {preloaderDone && (
+            <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
+              <AnimatedRoutes />
+            </WouterRouter>
           )}
-        </AnimatePresence>
 
-        {preloaderDone && (
-          <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
-            <AnimatedRoutes />
-          </WouterRouter>
-        )}
-
-        <Toaster />
-      </TooltipProvider>
+          <Toaster />
+        </TooltipProvider>
+      </CartProvider>
     </QueryClientProvider>
   );
 }

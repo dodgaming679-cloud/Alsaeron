@@ -4,6 +4,9 @@ export interface Product {
   name: string;
   category: string;
   price: string;
+  priceValue: number;
+  priceINR: number;
+  priceINRDisplay: string;
   priceNote: string;
   tagline: string;
   description: string;
@@ -24,6 +27,9 @@ export const products: Product[] = [
     name: "The Sovereign Timepiece",
     category: "Chronometry",
     price: "$145,000",
+    priceValue: 145000,
+    priceINR: 12000000,
+    priceINRDisplay: "₹1,20,00,000",
     priceNote: "Price upon private consultation",
     tagline: "Time does not pass. It obeys.",
     description:
@@ -57,6 +63,9 @@ export const products: Product[] = [
     name: "Dynasty Ring",
     category: "Adornment",
     price: "$28,500",
+    priceValue: 28500,
+    priceINR: 2400000,
+    priceINRDisplay: "₹24,00,000",
     priceNote: "Includes private sizing ceremony",
     tagline: "The mark of an emperor. The weight of a dynasty.",
     description: "Platinum and zero-point energy crystal. The mark of an emperor.",
@@ -89,6 +98,9 @@ export const products: Product[] = [
     name: "Celestial Armor Bracelet",
     category: "Architecture",
     price: "$62,000",
+    priceValue: 62000,
+    priceINR: 5200000,
+    priceINRDisplay: "₹52,00,000",
     priceNote: "Bespoke dimensions standard",
     tagline: "Impervious elegance. Architecture for the wrist.",
     description: "Articulated nanocarbon plates. Impervious elegance for the wrist.",
