@@ -8,13 +8,10 @@ import { Preloader } from "@/components/Preloader";
 import { CartProvider } from "@/context/CartContext";
 import NotFound from "@/pages/not-found";
 import Home from "@/pages/Home";
-import ProductPage from "@/pages/ProductPage";
+import ProductPage from "@/pages/ProductPage";;
 import CheckoutPage from "@/pages/CheckoutPage";
 import PaymentPage from "@/pages/PaymentPage";
-import OrderSuccessPage from "@/pages/OrderSuccessPage";
-import AdminOrdersPage from "@/pages/AdminOrdersPage";
-
-const queryClient = new QueryClient();
+import OrderSuccessPage from "@/pages/OrderSuccessPage";importt AdminOrdersPage from "@/pages/AdminOrdersPage";;
 
 const easeOutExpo = [0.16, 1, 0.3, 1] as const;
 
@@ -43,20 +40,14 @@ function AnimatedRoutes() {
           <Switch location={location}>
             <Route path="/" component={Home} />
             <Route path="/product/:slug" component={ProductPage} />
-            <Route path="/checkout" component={CheckoutPage} />
+            <Route path="/checkout" cockoutPage} />
             <Route path="/payment" component={PaymentPage} />
             <Route path="/order-success/:orderId" component={OrderSuccessPage} />
             <Route path="/admin" component={AdminOrdersPage} />
             <Route component={NotFound} />
-          </Switch>
-        </motion.div>
-      </AnimatePresence>
-    </>
-  );
-}
-
-function App() {
-  const [preloaderDone, setPreloaderDone] = useState(
+        tch>
+   path </motion.div>
+      </AnimatePresreloaderDone, setPreloaderDone] = useState(
     () =>
       typeof sessionStorage !== "undefined" &&
       sessionStorage.getItem("alsaeron-loaded") === "1"
