@@ -13,6 +13,11 @@ import CheckoutPage from "@/pages/CheckoutPage";
 import PaymentPage from "@/pages/PaymentPage";
 import OrderSuccessPage from "@/pages/OrderSuccessPage";importt AdminOrdersPage from "@/pages/AdminOrdersPage";;
 
+import ProductPage from "@/pages/ProductPage";
+import Contact from "@/pages/Contact";
+const queryClient = new QueryClient();
+
+
 const easeOutExpo = [0.16, 1, 0.3, 1] as const;
 
 function ScrollToTop() {
@@ -44,6 +49,9 @@ function AnimatedRoutes() {
             <Route path="/payment" component={PaymentPage} />
             <Route path="/order-success/:orderId" component={OrderSuccessPage} />
             <Route path="/admin" component={AdminOrdersPage} />
+
+<Route path="/contact" component={Contact} />
+
             <Route component={NotFound} />
         tch>
    path </motion.div>
