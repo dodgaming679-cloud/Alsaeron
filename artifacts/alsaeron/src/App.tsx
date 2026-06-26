@@ -54,7 +54,7 @@ function AnimatedRoutes() {
             <Route component={NotFound} />
 </Switch>
     </motion.div>
-  </AnimatePresennce>
+  </AnimatePresence>
       );
       }
 
