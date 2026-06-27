@@ -57,8 +57,12 @@ function AnimatedRoutes() {
   </AnimatePresence>
 );
 }
-      
-     
+function App() {
+  const [preloaderDone, setPreloaderDone] = useState(
+    () =>
+      typeof sessionStorage !== "undefined" &&
+      sessionStorage.getItem("alsaeron-loaded") === "1"
+  );
 
   const handlePreloaderComplete = useCallback(() => {
     if (typeof sessionStorage !== "undefined") {
