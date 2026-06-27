@@ -55,8 +55,10 @@ function AnimatedRoutes() {
 </Switch>
     </motion.div>
   </AnimatePresence>
-      );
-      }
+);
+}
+      
+     
 
   const handlePreloaderComplete = useCallback(() => {
     if (typeof sessionStorage !== "undefined") {
