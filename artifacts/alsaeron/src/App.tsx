@@ -54,8 +54,9 @@ function AnimatedRoutes() {
             <Route component={NotFound} />
 </Switch>
     </motion.div>
-  </AnimatePresence>
-);
+      </AnimatePresence>
+    </>
+  );
 }
 function App() {
   const [preloaderDone, setPreloaderDone] = useState(
