@@ -18,20 +18,20 @@ export function Footer() {
           <div>
             <h3 className="text-xs font-sans tracking-[0.2em] text-white mb-6">EXPLORE</h3>
             <ul className="space-y-4">
-              <li><Link href="#collections" className="text-muted-foreground hover:text-white transition-colors text-sm font-light">Collections</Link></li>
-              <li><Link href="#bespoke" className="text-muted-foreground hover:text-white transition-colors text-sm font-light">Bespoke Orders</Link></li>
-              <li><Link href="#heritage" className="text-muted-foreground hover:text-white transition-colors text-sm font-light">Our Heritage</Link></li>
-              <li><Link href="#journal" className="text-muted-foreground hover:text-white transition-colors text-sm font-light">The Journal</Link></li>
+              <li><Link href="/" className="text-muted-foreground hover:text-white transition-colors text-sm font-light">Collections</Link></li>
+              <li><Link href="/contact" className="text-muted-foreground hover:text-white transition-colors text-sm font-light">Bespoke Orders</Link></li>
+              <li><Link href="/heritage" className="text-muted-foreground hover:text-white transition-colors text-sm font-light">Our Heritage</Link></li>
+              <li><Link href="/journal" className="text-muted-foreground hover:text-white transition-colors text-sm font-light">The Journal</Link></li>
             </ul>
           </div>
 
           <div>
             <h3 className="text-xs font-sans tracking-[0.2em] text-white mb-6">ASSISTANCE</h3>
             <ul className="space-y-4">
-              <li><Link href="#contact" className="text-muted-foreground hover:text-white transition-colors text-sm font-light">Contact Concierge</Link></li>
-              <li><Link href="#shipping" className="text-muted-foreground hover:text-white transition-colors text-sm font-light">Shipping & Returns</Link></li>
-              <li><Link href="#care" className="text-muted-foreground hover:text-white transition-colors text-sm font-light">Product Care</Link></li>
-              <li><Link href="#terms" className="text-muted-foreground hover:text-white transition-colors text-sm font-light">Terms of Service</Link></li>
+              <li><Link href="/contact" className="text-muted-foreground hover:text-white transition-colors text-sm font-light">Contact Concierge</Link></li>
+              <li><Link href="/shipping" className="text-muted-foreground hover:text-white transition-colors text-sm font-light">Shipping & Returns</Link></li>
+              <li><Link href="/product-care" className="text-muted-foreground hover:text-white transition-colors text-sm font-light">Product Care</Link></li>
+              <li><Link href="/terms" className="text-muted-foreground hover:text-white transition-colors text-sm font-light">Terms of Service</Link></li>
             </ul>
           </div>
         </div>

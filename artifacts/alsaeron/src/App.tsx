@@ -14,6 +14,11 @@ import PaymentPage from "@/pages/PaymentPage";
 import OrderSuccessPage from "@/pages/OrderSuccessPage";
 import AdminOrdersPage from "@/pages/AdminOrdersPage";
 import Contact from "@/pages/Contact";
+import ShippingPage from "@/pages/ShippingPage";
+import ProductCarePage from "@/pages/ProductCarePage";
+import TermsPage from "@/pages/TermsPage";
+import HeritagePage from "@/pages/HeritagePage";
+import JournalPage from "@/pages/JournalPage";
 const queryClient = new QueryClient();
 
 
@@ -50,6 +55,11 @@ function AnimatedRoutes() {
             <Route path="/admin" component={AdminOrdersPage} />
 
 <Route path="/contact" component={Contact} />
+<Route path="/shipping" component={ShippingPage} />
+<Route path="/product-care" component={ProductCarePage} />
+<Route path="/terms" component={TermsPage} />
+<Route path="/heritage" component={HeritagePage} />
+<Route path="/journal" component={JournalPage} />
 
             <Route component={NotFound} />
 </Switch>
