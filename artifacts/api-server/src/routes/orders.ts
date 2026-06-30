@@ -71,7 +71,7 @@ router.post("/orders", async (req, res) => {
   }
 });
 
-router.get("/orders", async (_req, res) => {
+router.get("/orders", async (req, res) => {
   try {
     const orders = await db
       .select()
@@ -79,7 +79,7 @@ router.get("/orders", async (_req, res) => {
       .orderBy(desc(ordersTable.createdAt));
     return res.json({ orders });
   } catch (err) {
-    res.log.error(err, "Failed to fetch orders");
+    req.log.error(err, "Failed to fetch orders");
     return res.status(500).json({ error: "Failed to fetch orders" });
   }
 });
